@@ -1,4 +1,4 @@
-require 'rack/request_profiler'
+require 'rack/request-profiler'
 require 'em-stathat'
 
 module Rack

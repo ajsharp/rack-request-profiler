@@ -1,6 +1,6 @@
 $:.push(File.dirname(File.expand_path(__FILE__)))
 
-require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'rack-request_profiler')
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'rack-request-profiler')
 
 require 'rack/test'
 require 'em-stathat'

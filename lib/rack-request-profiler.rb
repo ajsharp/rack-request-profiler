@@ -1,5 +1,5 @@
 module Rack
-  autoload :RequestProfiler, 'rack/request_profiler'
+  autoload :RequestProfiler, 'rack/request-profiler'
 
   module Profilers
     autoload :Statsd,  'rack/profilers/statsd'
