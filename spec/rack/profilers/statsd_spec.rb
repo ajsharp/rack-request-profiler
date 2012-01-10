@@ -24,4 +24,15 @@ describe Rack::Profilers::Statsd do
     $statsd.should_not_receive(:timing)
     Rack::MockRequest.new(app).get('/ignore-me')
   end
+
+  it "prepends the namespace if passed in" do
+    app = Rack::Builder.app do
+      use Rack::Profilers::Statsd, $statsd, :namespace => 'namespace.me.'
+      run lambda { |env| [200, {}, ['']]}
+    end
+
+    Rack::Profilers::Statsd.any_instance.stub(:run_time => 200)
+    $statsd.should_receive(:timing).with('namespace.me.GET.', 200)
+    Rack::MockRequest.new(app).get('/')
+  end
 end
