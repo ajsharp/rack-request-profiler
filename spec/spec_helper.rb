@@ -4,6 +4,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'rack-r
 
 require 'rack/test'
 require 'em-stathat'
+require 'sinatra/base'
 
 EventMachine::StatHat.config do |c|
   c.ukey  = 'key'
