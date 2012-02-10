@@ -27,7 +27,9 @@ module Rack
 
       status, headers, body = @app.call(env)
 
-      handle_results(env, request)
+      unless status == 404
+        handle_results(env, request)
+      end
       [status, headers, body]
     end
 
