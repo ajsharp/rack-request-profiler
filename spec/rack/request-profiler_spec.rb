@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Rack::RequestProfiler do
   include Rack::Test::Methods
   class MockApp < Sinatra::Base
+    use Rack::RequestProfiler, :ignore_path => /ignore_me/
     get '/' do
       [200, "Hello, world"]
     end
@@ -23,27 +24,11 @@ describe Rack::RequestProfiler do
   end
 
   it "invokes the handle_results interface" do
-    class Rack::CustomProfiler < Rack::RequestProfiler
-      def handle_results(env)
-      end
-    end
-    app = Rack::Builder.app do
-      use Rack::CustomProfiler
-
-      run lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['']]}
-    end
-
-    Rack::CustomProfiler.any_instance.expects(:handle_results).once
+    Rack::RequestProfiler.any_instance.expects(:handle_results).once
     Rack::MockRequest.new(app).get('/')
   end
 
   it "does not invoke handle_results if ignore_path matches" do
-    app = Rack::Builder.app do
-      use Rack::RequestProfiler, :ignore_path => /ignore_me/
-
-      run lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['']]}
-    end
-
     Rack::RequestProfiler.any_instance.expects(:handle_results).never
     Rack::MockRequest.new(app).get('/ignore_me')
   end
