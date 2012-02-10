@@ -11,4 +11,5 @@ EventMachine::StatHat.config do |c|
 end
 
 RSpec.configure do |config|
+  config.mock_with :mocha
 end

@@ -18,7 +18,7 @@ describe Rack::RequestProfiler do
       run lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['']]}
     end
 
-    Rack::CustomProfiler.any_instance.should_receive(:handle_results)
+    Rack::CustomProfiler.any_instance.expects(:handle_results).once
     Rack::MockRequest.new(app).get('/')
   end
 
@@ -29,7 +29,7 @@ describe Rack::RequestProfiler do
       run lambda { |env| [200, {'Content-Type' => 'text/plain'}, ['']]}
     end
 
-    Rack::RequestProfiler.any_instance.should_not_receive(:handle_results)
+    Rack::RequestProfiler.any_instance.expects(:handle_results).never
     Rack::MockRequest.new(app).get('/ignore_me')
   end
 end
