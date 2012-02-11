@@ -3,6 +3,15 @@ require 'spec_helper'
 describe Rack::Profilers::Statsd do
   include Rack::Test::Methods
 
+  class MockApp < Sinatra::Base
+    use Rack::Profilers::Statsd, Statsd.new('localhost')
+    post '/posts/:id/update' do
+      [200, "post content"]
+    end
+  end
+
+  def app; @app ||= Rack::Builder.app { run MockApp }; end
+
   it "sends stuff to statsd" do
     statsd = Statsd.new 'localhost'
     app = Rack::Builder.app do
@@ -35,5 +44,10 @@ describe Rack::Profilers::Statsd do
     Rack::Profilers::Statsd.any_instance.stubs(:run_time => 200)
     statsd.expects(:timing).with('namespace.me.GET.', 200)
     Rack::MockRequest.new(app).get('/')
+  end
+
+  it "subs out ids" do
+    Statsd.any_instance.expects(:timing).with("POST.posts.1.update", any_parameters)
+    Rack::MockRequest.new(app).post('/posts/1/update')
   end
 end
