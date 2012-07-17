@@ -1,11 +1,19 @@
 module Rack
   module Utils
     class UrlStripper
-      # A crude attempt at matching a BSON id format (http://bsonspec.org/)
-      ID_PATTERN = /[0-9]+[a-zA-Z]+[^\/]*/
+      class << self
+        def id_pattern
+          # A crude attempt at matching a BSON id format (http://bsonspec.org/)
+          @id_pattern ||= /[0-9]+[a-zA-Z]+[^\/]*/
+        end
 
-      def self.replace_id(url)
-        url.gsub(ID_PATTERN, 'ID')
+        def id_pattern=(pattern)
+          @id_pattern = pattern
+        end
+
+        def replace_id(url)
+          url.gsub(id_pattern, 'ID')
+        end
       end
     end
   end
