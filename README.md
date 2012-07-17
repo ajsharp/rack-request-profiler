@@ -18,6 +18,12 @@ Simply include one of the profiler middlewares into the middleware stack in any 
 use Rack::Profilers::Statsd, Statsd.new('localhost'), :ignore_path => /^\/assets/
 ```
 
+Be default, we match URL's that look like BSON ids. You can over-ride this regular expression like this:
+
+```ruby
+Rack::Utils::UrlStripper.id_pattern = /some_other_pattern/
+```
+
 ## Profilers
 
 * Statsd - Uses the [statsd ruby client](https://github.com/reinh/statsd-ruby) to send data to statsd / graphite.
