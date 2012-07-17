@@ -14,3 +14,17 @@ describe Rack::Utils::UrlStripper do
     end
   end
 end
+
+describe Rack::Utils::UrlStripper, '.id_pattern' do
+  it 'has a default value' do
+    old_val = Rack::Utils::UrlStripper.id_pattern
+    Rack::Utils::UrlStripper.id_pattern.should_not be_nil
+    Rack::Utils::UrlStripper.id_pattern = old_val
+  end
+
+  it 'allows setting the id_pattern to a custom value' do
+    new_pattern = /my_new_pattern/
+    Rack::Utils::UrlStripper.id_pattern = new_pattern
+    Rack::Utils::UrlStripper.id_pattern.should == new_pattern
+  end
+end
