@@ -15,7 +15,8 @@ This project currently provides profiler middlewares for stathat and statsd. If 
 Simply include one of the profiler middlewares into the middleware stack in any rack-compatible application like so:
 
 ```ruby
-use Rack::Profilers::Statsd, Statsd.new('localhost'), :ignore_path => /^\/assets/
+$statsd = Statsd.new('localhost')
+use Rack::Profilers::Statsd, $statsd, :ignore_path => /^\/assets/
 ```
 
 Be default, we match URL's that look like BSON ids. You can over-ride this regular expression like this:
